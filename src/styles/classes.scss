@@ -1,0 +1,42 @@
+@use './mixins' as *;
+
+%container {
+  width: min(100% - 2 * var(--container-padding), var(--container-max-width));
+  margin-inline: auto;
+}
+
+%f-48 {
+  @include fluid(font-size, 28px, 48px, 48px);
+  @include fluid(line-height, 42px, 64px, 64px);
+}
+
+%f-32 {
+  @include fluid(font-size, 28px, 32px, 32px);
+  @include fluid(line-height, 32px, 48px, 48px);
+}
+
+%f-24 {
+  @include fluid(font-size, 21px, 24px, 24px);
+  @include fluid(line-height, 28px, 32px, 32px);
+}
+
+%f-21 {
+  @include fluid(font-size, 18px, 21px, 21px);
+  @include fluid(line-height, 28px, 30px, 30px);
+}
+
+%f-18 {
+  @include fluid(font-size, 16px, 18px, 18px);
+  @include fluid(line-height, 24px, 26px, 26px);
+  letter-spacing: 0.25px;
+}
+
+%f-16 {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+%f-14 {
+  font-size: 14px;
+  line-height: 20px;
+}

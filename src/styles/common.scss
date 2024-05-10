@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+    touch-action: none;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main,
+section {
+    position: relative;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+a {
+    text-decoration: none;
+}

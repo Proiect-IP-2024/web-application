@@ -1,0 +1,56 @@
+@use "sass:math";
+
+$breakpoints: (
+    m: 375px,
+    ml: 480px,
+    ts: 640px,
+    t: 768px,
+    tl: 1024px,
+    ds: 1280px,
+    d: 1440px,
+    dl: 1920px,
+    ) !default;
+
+@function get-breakpoint($breakpoint) {
+    @if type-of($breakpoint) !="number" {
+        @return map-get($map: $breakpoints, $key: $breakpoint
+    );
+}
+
+@return $breakpoint;
+}
+
+@mixin breakpoint($breakpoint) {
+    @media screen and (min-width: get-breakpoint($breakpoint)) {
+        @content;
+    }
+}
+
+
+@function strip-units($number) {
+    @return math.div($number, ($number * 0 + 1));
+}
+
+@function calculateRem($size) {
+    $remSize: math.div($size, 16px);
+    @return #{$remSize}rem;
+}
+
+@function calculateClamp($minimum,
+    $preferred,
+    $maximum,
+    $preferred_viewport_width: 1000px) {
+    $clamp_parameter_1: calculateRem($minimum);
+    $clamp_parameter_2: strip-units((math.div(($preferred + 0), $preferred_viewport_width)) * 100) * 1vw;
+    $clamp_parameter_3: calculateRem($maximum);
+
+    @return clamp(#{$clamp_parameter_1}, #{$clamp_parameter_2}, #{$clamp_parameter_3});
+}
+
+@mixin fluid($property_name,
+    $minimum,
+    $preferred,
+    $maximum,
+    $preferred_viewport_width: 1000px) {
+    #{$property_name}: calculateClamp($minimum, $preferred, $maximum, $preferred_viewport_width);
+}

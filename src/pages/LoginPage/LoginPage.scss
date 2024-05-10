@@ -1,0 +1,46 @@
+@use "../../styles/mixins" as *;
+
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 720px;
+
+    @media screen and (min-height: 650px) {
+        min-height: 100vh;
+    }
+
+    h1,
+    p {
+        text-align: center;
+
+        &.error-message {
+            color: var(--c-red);
+        }
+    }
+
+    input {
+        outline: none;
+        border:1px solid var(--c-white);
+        background-color: var(--c-alto);
+        margin-bottom: 13px;
+        grid-column: 1 / span 6;
+        padding: 10px;
+        border-radius: 5px;
+
+        @include breakpoint(t) {
+            grid-column: 5 / span 4;
+        }
+
+        &:nth-last-child(1) {
+            background-color: var(--c-midnight);
+            color: var(--c-white);
+            cursor: pointer;
+        }
+
+        &.error {
+            border-color: var(--c-red);
+        }
+    }
+}

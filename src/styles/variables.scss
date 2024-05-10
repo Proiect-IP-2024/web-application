@@ -1,0 +1,19 @@
+@use "./mixins.scss" as *;
+
+:root {
+    --main-spacing: 50px;
+    --container-max-width: 1400px;
+    --container-padding: 15px;
+
+    @include breakpoint(20) {
+        --container-padding: 30px;
+    }
+
+
+    //colors
+    --c-white: #ffffff;
+    --c-black: #000000;
+    --c-red: #FF0000;
+    --c-alto: #D9D9D9;
+    --c-midnight: #001122;
+}

@@ -1,0 +1,73 @@
+@use './classes.scss' as *;
+
+body {
+  @extend %f-18;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: calc(var(--main-spacing) / 2);
+  font-weight: 300;
+}
+
+h1 {
+  @extend %f-32;
+}
+
+h2 {
+  @extend %f-24;
+}
+
+h3 {
+  @extend %f-21;
+}
+
+h4 {
+  @extend %f-18;
+}
+
+h5 {
+  @extend %f-16;
+}
+
+h6 {
+  @extend %f-14;
+}
+
+p {
+  @extend %f-16;
+}
+
+.f-48 {
+  @extend %f-48;
+}
+
+.f-32 {
+  @extend %f-32;
+}
+
+.f-24 {
+  @extend %f-24;
+}
+
+.f-21 {
+  @extend %f-21;
+}
+
+.f-18 {
+  @extend %f-18;
+}
+
+.f-16 {
+  @extend %f-16;
+}
+
+.f-14 {
+  @extend %f-14;
+}
