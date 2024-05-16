@@ -3,11 +3,11 @@ import { RequestMethod } from "../models/models";
 export function createRequestOptions(
   method: RequestMethod,
   accessToken?: string,
-  body?: { [key: string]: string | number }
+  body?: any
 ): {
   method: string;
   headers: { [key: string]: string };
-  body?: string;
+  body?: any;
 } {
   return {
     method,

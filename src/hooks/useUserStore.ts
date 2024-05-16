@@ -29,16 +29,15 @@ export const useUserStore = () => {
     }
   };
 
-  const login = async (
-    usernameOrEmail: string,
-    password: string
-  ): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const response = await fetch(
         `${BASE_URL}${endpoints.Login}`,
         createRequestOptions("POST", undefined, {
-          usernameOrEmail,
-          password,
+          userData: {
+            email,
+            password,
+          },
         })
       );
       const result = await response.json();
@@ -57,17 +56,23 @@ export const useUserStore = () => {
   };
 
   const register = async (
-    username: string,
+    firstName: string,
+    lastName: string,
     email: string,
-    password: string
+    password: string,
+    accoutType: number,
+    securityCore: string
   ) => {
     try {
       const response = await fetch(
         `${BASE_URL}${endpoints.Register}`,
         createRequestOptions("POST", undefined, {
-          username,
-          email,
-          password,
+          userData: {
+            firstName,
+            lastName,
+            email,
+            password,
+          }
         })
       );
       const result = await response.json();

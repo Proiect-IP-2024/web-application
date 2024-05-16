@@ -1,9 +1,12 @@
 import BackgroundImage from "../../components/BackgroundImage/BackgroundImage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./LoginPage.scss";
 import Container from "../../components/Container/Container";
 import Grid from "../../components/Grid/Grid";
+import { useUserStore } from "../../hooks/useUserStore";
+import { useNavigate } from "react-router-dom";
+import { MyRoutes } from "../../routes/routes";
 
 interface UserData {
   email: string;
@@ -16,6 +19,11 @@ interface Error {
 }
 
 const LoginPage = () => {
+  const { login } = useUserStore();
+  const navigate = useNavigate();
+
+  const { authToken, getAuthTokenFromCookies } = useUserStore();
+
   const [userData, setUserData] = useState<UserData>({
     email: "",
     password: "",
@@ -29,12 +37,23 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     if (userData && userData.email && userData.password) {
-      console.log(userData);
-      setError({
-        email: false,
-        password: false,
-        message: "",
-      });
+      const isLogged = await login(userData.email, userData.password);
+
+      if (isLogged) {
+        setError({
+          email: false,
+          password: false,
+          message: "",
+        });
+
+        navigate(MyRoutes.HomePage);
+      } else {
+        setError({
+          email: true,
+          password: true,
+          message: "Invalid Email/Password!",
+        });
+      }
     } else {
       if (!userData.email && !userData.password)
         setError({
@@ -57,6 +76,18 @@ const LoginPage = () => {
       } else setError({ ...error, message: "" });
     }
   };
+
+  useEffect(() => {
+    getAuthTokenFromCookies();
+  }, []);
+
+  useEffect(() => {
+    //TODO: verify if token is valid
+
+    if (authToken) {
+      navigate(MyRoutes.HomePage);
+    }
+  }, [authToken]);
 
   return (
     <section className="login-page">
