@@ -1,36 +1,46 @@
 .pacient-list {
     margin-top: 100px;
 
+    .grid {
+        row-gap: 20px;
 
-    .pacient {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: var(--c-white);
-        border-radius: 20px;
 
-        .details {
+        .pacient {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--c-white);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
 
-            width: 80%;
-
-            & > * {
-                color: var(--c-black);
-                margin: 0px;
+            &:hover {
+                box-shadow: 0px 0px 2px 0px var(--c-black);
+                scale: 1.02;
             }
-        }
 
-        .actions {
+            .details {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
 
-            & > * {
-                margin: 0px;
+                width: 80%;
+
+                &>* {
+                    color: var(--c-black);
+                    margin: 0px;
+                }
+            }
+
+            .actions {
+
+                &>* {
+                    margin: 0px;
+                }
             }
         }
     }
-
 
 }

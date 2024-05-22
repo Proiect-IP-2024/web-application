@@ -31,17 +31,17 @@ const LeftMenu = ({
   useEffect(() => {
     setMenuIcons([
       {
-        text: "Pacients List",
+        text: "Patient List",
         icon: <InboxIcon />,
         onClickFuntion: () => {
-          setCurrentPage({ currentPage: "Pacients List" });
+          setCurrentPage({ currentPage: "Patient List" });
         },
       },
       {
-        text: "Add Pacient",
+        text: "Add Patient",
         icon: <InboxIcon />,
         onClickFuntion: () => {
-          setCurrentPage({ currentPage: "Add Pacient" });
+          setCurrentPage({ currentPage: "Add Patient" });
         },
       },
       {

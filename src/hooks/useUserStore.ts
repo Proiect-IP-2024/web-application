@@ -89,24 +89,41 @@ export const useUserStore = () => {
   };
 
   const logout = () => {
-    console.log("Logging out");
     setAuthToken(null);
     removeCookie("ProiectIP2024");
     navigate(MyRoutes.LoginPage);
   };
 
-  const getRegisteredPacients = async () => {
+  const getAssignedPacientsList = async () => {
     try {
-      // const response = await fetch(
-      //   `${BASE_URL}${endpoints.GetPatients}`,
-      //   createRequestOptions("POST", authToken ?? undefined, undefined)
-      // );
-      // const result = await response.json();
-      // if (response.ok) {
-      //   console.log(result);
+      const response = await fetch(
+        `${BASE_URL}${endpoints.GetAssignedPacients}`,
+        createRequestOptions("GET", authToken ?? undefined)
+      );
+      const result = await response.json();
+      if (response.ok && result.pacientList) {
+        return result.pacientList;
+      }
 
-      return true;
-      // }
+      return [];
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to get registered patients");
+    }
+  };
+
+  const getUnassignedPacientsList = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${endpoints.GetUnassignedPacients}`,
+        createRequestOptions("GET", authToken ?? undefined)
+      );
+      const result = await response.json();
+      if (response.ok && result.pacientList) {
+        return result.pacientList;
+      }
+
+      return [];
     } catch (e) {
       console.log(e);
       console.log("Failed to get registered patients");
@@ -120,6 +137,7 @@ export const useUserStore = () => {
     login,
     logout,
     register,
-    getRegisteredPacients,
+    getAssignedPacientsList,
+    getUnassignedPacientsList,
   };
 };

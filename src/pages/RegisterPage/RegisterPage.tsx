@@ -186,10 +186,14 @@ const RegisterPage = () => {
           )}
           <input
             type="button"
-            value="Login"
-            className="f-18"
+            value="Create account"
+            className="f-18 register-button"
             onClick={handleRegister}
           />
+
+          <p className="f-18">
+            Already have an account? <a href={MyRoutes.LoginPage}>Login</a>
+          </p>
         </Grid>
       </Container>
     </section>

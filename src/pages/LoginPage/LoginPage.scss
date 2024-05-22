@@ -33,7 +33,7 @@
             grid-column: 5 / span 4;
         }
 
-        &:nth-last-child(1) {
+        &.loginButton {
             background-color: var(--c-midnight);
             color: var(--c-white);
             cursor: pointer;

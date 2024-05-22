@@ -2,8 +2,8 @@ export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface User {
   id?: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   password: string;
   email: string;
   newPassword?: string;
@@ -11,5 +11,17 @@ export interface User {
 }
 
 export interface HomeNavigation {
-  currentPage: "Pacients List" | "Add Pacient";
+  currentPage: "Patient List" | "Add Patient";
+}
+
+export interface Pacient
+  extends Omit<User, "password" | "newPassword" | "userPower"> {
+  id?: string;
+  id_medic?: string;
+  CNP_pacient: string;
+  varsta_pacient: number;
+  adresa_pacient: string;
+  telefon_pacient: string;
+  profesie_pacient: string;
+  loc_munca_pacient: string;
 }

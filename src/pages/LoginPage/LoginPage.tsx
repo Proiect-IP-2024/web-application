@@ -133,9 +133,14 @@ const LoginPage = () => {
           <input
             type="button"
             value="Login"
-            className="f-18"
+            className="f-18 loginButton"
             onClick={handleLogin}
           />
+
+          <p className="f-18">
+            Don't have an account?{" "}
+            <a href={MyRoutes.RegisterPage}>Register now</a>
+          </p>
         </Grid>
       </Container>
     </section>

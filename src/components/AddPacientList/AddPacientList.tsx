@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import Container from "../Container/Container";
 import Grid from "../Grid/Grid";
 import { useUserStore } from "../../hooks/useUserStore";
-import "./ListaPacienti.scss";
+import "./AddPacientList.scss";
 import { Pacient } from "../../models/models";
 
-const ListaPacienti = () => {
-  const { getAssignedPacientsList, authToken } = useUserStore();
+const AddPacientList = () => {
+  const { authToken, getUnassignedPacientsList } = useUserStore();
   const [pacientList, setPacientList] = useState<Pacient[]>([]);
 
   const fetchPacients = async () => {
-    const pacients = await getAssignedPacientsList();
+    const pacients = await getUnassignedPacientsList();
     setPacientList(pacients);
   };
 
@@ -19,10 +19,10 @@ const ListaPacienti = () => {
   }, [authToken]);
 
   return (
-    <section className="pacient-list">
+    <section className="add-pacient-list">
       <Container>
         <Grid>
-          {pacientList && pacientList.length > 0 ? (
+          {pacientList.length > 0 ? (
             pacientList.map((pacient) => (
               <div className="pacient" key={pacient.id}>
                 <div className="details">
@@ -42,7 +42,9 @@ const ListaPacienti = () => {
               </div>
             ))
           ) : (
-            <h2 className="no-pacient">No pacient added</h2>
+            <h2 className="no-pacient">
+              No patient without an associated doctor
+            </h2>
           )}
         </Grid>
       </Container>
@@ -50,4 +52,4 @@ const ListaPacienti = () => {
   );
 };
 
-export default ListaPacienti;
+export default AddPacientList;

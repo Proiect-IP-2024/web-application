@@ -33,7 +33,7 @@
                 grid-column: 5 / span 4;
             }
 
-            &:nth-last-child(1) {
+            &.register-button {
 
                 background-color: var(--c-midnight);
                 color: var(--c-white);
