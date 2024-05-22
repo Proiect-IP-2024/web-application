@@ -1,3 +1,5 @@
+import { Home } from "@mui/icons-material";
+
 export const BASE_URL = "http://localhost:1000";
 
 export const MyRoutes = {

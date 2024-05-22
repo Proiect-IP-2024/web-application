@@ -72,12 +72,12 @@ export const useUserStore = () => {
             lastName,
             email,
             password,
-          }
+          },
         })
       );
       const result = await response.json();
       if (response.ok) {
-        setCookie("DocAppUserToken", result.token, { path: "/" });
+        setCookie("ProiectIP2024", result.token, { path: "/" });
         setAuthToken(result.token);
         return true;
       }
@@ -89,9 +89,28 @@ export const useUserStore = () => {
   };
 
   const logout = () => {
+    console.log("Logging out");
     setAuthToken(null);
-    removeCookie("DocAppUserToken");
+    removeCookie("ProiectIP2024");
     navigate(MyRoutes.LoginPage);
+  };
+
+  const getRegisteredPacients = async () => {
+    try {
+      // const response = await fetch(
+      //   `${BASE_URL}${endpoints.GetPatients}`,
+      //   createRequestOptions("POST", authToken ?? undefined, undefined)
+      // );
+      // const result = await response.json();
+      // if (response.ok) {
+      //   console.log(result);
+
+      return true;
+      // }
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to get registered patients");
+    }
   };
 
   return {
@@ -101,5 +120,6 @@ export const useUserStore = () => {
     login,
     logout,
     register,
+    getRegisteredPacients,
   };
 };

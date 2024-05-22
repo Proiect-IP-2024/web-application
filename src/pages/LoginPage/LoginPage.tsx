@@ -12,6 +12,7 @@ interface UserData {
   email: string;
   password: string;
 }
+
 interface Error {
   email: boolean;
   password: boolean;
@@ -77,13 +78,22 @@ const LoginPage = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   useEffect(() => {
     getAuthTokenFromCookies();
+    document.addEventListener("keydown", handleKeyDown as any);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown as any);
+    };
   }, []);
 
   useEffect(() => {
-    //TODO: verify if token is valid
-
     if (authToken) {
       navigate(MyRoutes.HomePage);
     }
@@ -98,24 +108,28 @@ const LoginPage = () => {
 
           <input
             type="text"
-            className={`f-18 ${error.email ? ` error` : ``}`}
+            className={`f-18 ${error.email ? "error" : ""}`}
             placeholder="Enter your email or username"
             onChange={({ target }) =>
               setUserData({ ...userData, email: target.value })
             }
+            onKeyDown={handleKeyDown}
           />
+
           <input
             type="password"
-            className={`f-18 ${error.password ? ` error` : ``}`}
-            placeholder="Enter tour password"
+            className={`f-18 ${error.password ? "error" : ""}`}
+            placeholder="Enter your password"
             onChange={({ target }) =>
               setUserData({ ...userData, password: target.value })
             }
+            onKeyDown={handleKeyDown}
           />
 
           {error.message && (
             <p className="f-18 error-message">{error.message}</p>
           )}
+          
           <input
             type="button"
             value="Login"

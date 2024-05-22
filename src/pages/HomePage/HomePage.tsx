@@ -1,29 +1,17 @@
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
-import { useUserStore } from "../../hooks/useUserStore";
-import { MyRoutes } from "../../routes/routes";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import MainLayout from "../../components/MainLayout/MainLayout";
+import { HomeNavigation } from "../../models/models";
+import ListaPacienti from "../../components/ListaPacienti/ListaPacienti";
 
 const HomePage = () => {
-  const navigate = useNavigate();
-  const { authToken, getAuthTokenFromCookies } = useUserStore();
-
-  useEffect(() => {
-    if (!(authToken || getAuthTokenFromCookies())) {
-      navigate(MyRoutes.LoginPage);
-    }
-  }, []);
+  const [currentPage, setCurrentPage] = useState<HomeNavigation>({
+    currentPage: "Pacients List",
+  });
 
   return (
-    <>
-      <Header />
-      <section className="homepage">
-        <h1>Home Page</h1>
-        <p>This is the home page.</p>
-      </section>
-      <Footer />
-    </>
+    <MainLayout currentPage={currentPage} setCurrentPage={setCurrentPage}>
+      {currentPage.currentPage === "Pacients List" && <ListaPacienti />}
+    </MainLayout>
   );
 };
 
