@@ -10,6 +10,11 @@ export const endpoints = {
   Login: "/user/login",
   Register: "/user/createUser",
   RefreshToken: "/user/refreshToken",
-  GetAssignedPacients: '/user/getAssignedPacientList',
-  GetUnassignedPacients: '/user/getUnassignedPacientList',
+  GetUserData: "/user/getUserData",
+  GetUserType: "/user/getUserType",
+  GetMedicData: "/user/getMedicData",
+  GetPacientData: "/user/getPacientData",
+  GetIngrijitorData: "/user/getIngrijitorData",
+  GetAssignedPacients: "/user/getAssignedPacientList",
+  GetUnassignedPacients: "/user/getUnassignedPacientList",
 };

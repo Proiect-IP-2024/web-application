@@ -8,7 +8,8 @@ import { MyRoutes } from "../routes/routes";
 
 export const useUserStore = () => {
   const navigate = useNavigate();
-  const { user, authToken, setAuthToken } = useContext(UserStoreContext);
+  const { user, setUser, authToken, setAuthToken } =
+    useContext(UserStoreContext);
   const [cookies, setCookie, removeCookie] = useCookies([
     process.env.COOKIE_NAME || "ProiectIP2024",
   ]);
@@ -29,6 +30,95 @@ export const useUserStore = () => {
     }
   };
 
+  const getUserData = async () => {
+    if (!authToken) {
+      return false;
+    }
+
+    const getUserDataResponse = await (
+      await fetch(
+        `${BASE_URL}${endpoints.GetUserData}`,
+        createRequestOptions("GET", authToken)
+      )
+    ).json();
+
+    if (!(getUserDataResponse && getUserDataResponse.user)) {
+      return false;
+    }
+
+    const getUserTypeResponse = await (
+      await fetch(
+        `${BASE_URL}${endpoints.GetUserType}`,
+        createRequestOptions("GET", authToken)
+      )
+    ).json();
+
+    if (!getUserTypeResponse) {
+      return false;
+    }
+
+    if (getUserTypeResponse.isMedic) {
+      const getMedicDataResponse = await (
+        await fetch(
+          `${BASE_URL}${endpoints.GetMedicData}`,
+          createRequestOptions("GET", authToken)
+        )
+      ).json();
+
+      if (getMedicDataResponse && getMedicDataResponse.medic) {
+        console.log(getMedicDataResponse.medic);
+        setUser({
+          ...getUserDataResponse.user,
+          telefon: getMedicDataResponse.medic.telefon,
+          userPower: 2,
+        });
+        return true;
+      }
+    } else if (getUserTypeResponse.isPacient) {
+      const getPacientDataResponse = await (
+        await fetch(
+          `${BASE_URL}${endpoints.GetPacientData}`,
+          createRequestOptions("GET", authToken)
+        )
+      ).json();
+      if (getPacientDataResponse && getPacientDataResponse.pacient) {
+        setUser({
+          ...getUserDataResponse.user,
+          ...getPacientDataResponse.pacient,
+          userPower: 5,
+        });
+        return true;
+      }
+    } else if (getUserTypeResponse.isIngrijitor) {
+      const getIngrijitorDataResponse = await (
+        await fetch(
+          `${BASE_URL}${endpoints.GetIngrijitorData}`,
+          createRequestOptions("GET", authToken)
+        )
+      ).json();
+
+      if (getIngrijitorDataResponse && getIngrijitorDataResponse.ingrijitor) {
+        setUser({
+          ...getUserDataResponse.user,
+          userPower: 4,
+        });
+        return true;
+      }
+    } else if (getUserTypeResponse.isAdmin) {
+      setUser({
+        ...getUserDataResponse.user,
+        userPower: 1,
+      });
+      return true;
+    } else {
+      console.error("Error getting data");
+      return false;
+    }
+
+    console.error("Error getting data");
+    return false;
+  };
+
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
       const response = await fetch(
@@ -45,12 +135,39 @@ export const useUserStore = () => {
         setCookie(process.env.COOKIE_NAME || "ProiectIP2024", result.token, {
           path: "/",
         });
+
         setAuthToken(result.token);
         return true;
       }
     } catch (e) {
       console.log(e);
       console.log("Failed to login user");
+      return false;
+    }
+    return false;
+  };
+
+  const refreshUserToken = async () => {
+    try {
+      if (!authToken) return false;
+
+      const response = await fetch(
+        `${BASE_URL}${endpoints.RefreshToken}`,
+        createRequestOptions("GET", authToken)
+      );
+      const result = await response.json();
+      if (response.ok) {
+        setCookie(process.env.COOKIE_NAME || "ProiectIP2024", result.token, {
+          path: "/",
+        });
+
+        setAuthToken(result.token);
+        return true;
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to refresh token");
+      return false;
     }
     return false;
   };
@@ -89,6 +206,7 @@ export const useUserStore = () => {
   };
 
   const logout = () => {
+    setUser(null);
     setAuthToken(null);
     removeCookie("ProiectIP2024");
     navigate(MyRoutes.LoginPage);
@@ -120,13 +238,14 @@ export const useUserStore = () => {
       );
       const result = await response.json();
       if (response.ok && result.pacientList) {
-        return result.pacientList;
+        return { isOk: true, response: result.pacientList };
+      } else {
+        return { isOk: false, response: "User is not a message" };
       }
-
-      return [];
     } catch (e) {
       console.log(e);
       console.log("Failed to get registered patients");
+      return { isOk: false, response: "User is not a message" };
     }
   };
 
@@ -137,6 +256,8 @@ export const useUserStore = () => {
     login,
     logout,
     register,
+    getUserData,
+    refreshUserToken,
     getAssignedPacientsList,
     getUnassignedPacientsList,
   };

@@ -1,11 +1,9 @@
 import {
-  Divider,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -25,47 +23,60 @@ const LeftMenu = ({
   currentPage: HomeNavigation;
   setCurrentPage: Dispatch<SetStateAction<HomeNavigation>>;
 }) => {
-  const { logout } = useUserStore();
+  const { logout, user } = useUserStore();
   const [leftMenuItems, setMenuIcons] = useState<LeftMenuItem[] | null>(null);
 
   useEffect(() => {
-    setMenuIcons([
-      {
-        text: "Patient List",
-        icon: <InboxIcon />,
-        onClickFuntion: () => {
-          setCurrentPage({ currentPage: "Patient List" });
+    if (user?.userPower === 2) {
+      setMenuIcons([
+        {
+          text: "Patient List",
+          icon: <InboxIcon />,
+          onClickFuntion: () => {
+            setCurrentPage({ currentPage: "Patient List" });
+          },
         },
-      },
-      {
-        text: "Add Patient",
-        icon: <InboxIcon />,
-        onClickFuntion: () => {
-          setCurrentPage({ currentPage: "Add Patient" });
+        {
+          text: "Add Patient",
+          icon: <InboxIcon />,
+          onClickFuntion: () => {
+            setCurrentPage({ currentPage: "Add Patient" });
+          },
         },
-      },
-      {
-        text: "Logout",
-        icon: <InboxIcon />,
-        onClickFuntion: () => {
-          logout();
+        {
+          text: "Logout",
+          icon: <InboxIcon />,
+          onClickFuntion: () => {
+            logout();
+          },
         },
-      },
-    ]);
-  }, []);
+      ]);
+    } else {
+      setMenuIcons([
+        {
+          text: "Logout",
+          icon: <InboxIcon />,
+          onClickFuntion: () => {
+            logout();
+          },
+        },
+      ]);
+    }
+  }, [user]);
 
   return (
     <div>
-      <Toolbar />
-      <Divider />
       <List>
         {leftMenuItems?.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               onClick={item.onClickFuntion}
-              className={currentPage.currentPage === item.text ? "active" : ""}
+              className={`${item.text} ${
+                currentPage.currentPage === item.text ? "active" : ""
+              }`}
               sx={{
                 "& div": { color: "var(--c-white)" },
+                "&.Logout div": { color: "var(--c-red)" },
                 "&:hover": {
                   backgroundColor: "var(--c-white)",
                   "& div": {

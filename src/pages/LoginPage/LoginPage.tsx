@@ -40,6 +40,7 @@ const LoginPage = () => {
     if (userData && userData.email && userData.password) {
       const isLogged = await login(userData.email, userData.password);
 
+      
       if (isLogged) {
         setError({
           email: false,

@@ -26,7 +26,8 @@ const MainLayout = ({
 }) => {
   const drawerWidth = 240;
   const navigate = useNavigate();
-  const { authToken, getAuthTokenFromCookies } = useUserStore();
+  const { authToken, getAuthTokenFromCookies, getUserData, refreshUserToken } =
+    useUserStore();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -45,11 +46,31 @@ const MainLayout = ({
     }
   };
 
+  const fetchuser = async () => {
+    const isUser = await getUserData();
+
+    if (!isUser) {
+      const responseRefreshToken = await refreshUserToken();
+
+      if (!responseRefreshToken) {
+        navigate(MyRoutes.LoginPage);
+      }
+    }
+  };
+
   useEffect(() => {
     if (!(authToken || getAuthTokenFromCookies())) {
       navigate(MyRoutes.LoginPage);
     }
   }, []);
+
+  useEffect(() => {
+    fetchuser();
+  }, [authToken]);
+
+  // useEffect(() => {
+  //   console.log("User", user);
+  // }, [user]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -60,7 +81,10 @@ const MainLayout = ({
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Header handleDrawerToggle={handleDrawerToggle} currentPage={currentPage}/>
+        <Header
+          handleDrawerToggle={handleDrawerToggle}
+          currentPage={currentPage}
+        />
       </AppBar>
 
       <Box
@@ -80,6 +104,7 @@ const MainLayout = ({
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               backgroundColor: "#151828",
+              justifyContent: "center",
               boxSizing: "border-box",
               width: drawerWidth,
             },
@@ -93,6 +118,7 @@ const MainLayout = ({
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               backgroundColor: "#151828",
+              justifyContent: "center",
               boxSizing: "border-box",
               width: drawerWidth,
             },

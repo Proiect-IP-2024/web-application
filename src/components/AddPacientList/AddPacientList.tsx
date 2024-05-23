@@ -8,10 +8,18 @@ import { Pacient } from "../../models/models";
 const AddPacientList = () => {
   const { authToken, getUnassignedPacientsList } = useUserStore();
   const [pacientList, setPacientList] = useState<Pacient[]>([]);
+  const [error, setError] = useState<string>(
+    "No patient without an associated doctor"
+  );
 
   const fetchPacients = async () => {
     const pacients = await getUnassignedPacientsList();
-    setPacientList(pacients);
+
+    if (pacients.isOk) {
+      setPacientList(pacients.response);
+    } else {
+      setError("User is not a medic");
+    }
   };
 
   useEffect(() => {
@@ -42,9 +50,7 @@ const AddPacientList = () => {
               </div>
             ))
           ) : (
-            <h2 className="no-pacient">
-              No patient without an associated doctor
-            </h2>
+            <h2 className="no-pacient">{error}</h2>
           )}
         </Grid>
       </Container>
