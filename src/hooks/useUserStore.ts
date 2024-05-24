@@ -66,7 +66,6 @@ export const useUserStore = () => {
       ).json();
 
       if (getMedicDataResponse && getMedicDataResponse.medic) {
-        console.log(getMedicDataResponse.medic);
         setUser({
           ...getUserDataResponse.user,
           telefon: getMedicDataResponse.medic.telefon,

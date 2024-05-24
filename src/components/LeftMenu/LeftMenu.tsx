@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { Logout, Menu, PersonAddAlt1 } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { HomeNavigation } from "../../models/models";
 import { useUserStore } from "../../hooks/useUserStore";
@@ -31,21 +31,21 @@ const LeftMenu = ({
       setMenuIcons([
         {
           text: "Patient List",
-          icon: <InboxIcon />,
+          icon: <Menu />,
           onClickFuntion: () => {
             setCurrentPage({ currentPage: "Patient List" });
           },
         },
         {
           text: "Add Patient",
-          icon: <InboxIcon />,
+          icon: <PersonAddAlt1 />,
           onClickFuntion: () => {
             setCurrentPage({ currentPage: "Add Patient" });
           },
         },
         {
           text: "Logout",
-          icon: <InboxIcon />,
+          icon: <Logout />,
           onClickFuntion: () => {
             logout();
           },
@@ -55,7 +55,7 @@ const LeftMenu = ({
       setMenuIcons([
         {
           text: "Logout",
-          icon: <InboxIcon />,
+          icon: <Logout />,
           onClickFuntion: () => {
             logout();
           },

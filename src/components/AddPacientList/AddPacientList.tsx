@@ -4,6 +4,7 @@ import Grid from "../Grid/Grid";
 import { useUserStore } from "../../hooks/useUserStore";
 import "./AddPacientList.scss";
 import { Pacient } from "../../models/models";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const AddPacientList = () => {
   const { authToken, getUnassignedPacientsList } = useUserStore();
@@ -34,7 +35,9 @@ const AddPacientList = () => {
             pacientList.map((pacient) => (
               <div className="pacient" key={pacient.id}>
                 <div className="details">
-                  <div className="icon"></div>
+                <div className="icon">
+                    {pacient.profile_picture ?? <AccountCircleIcon />}
+                  </div>
                   <p className="name">{`${pacient.first_name} ${String(
                     pacient.last_name
                   ).toUpperCase()}`}</p>

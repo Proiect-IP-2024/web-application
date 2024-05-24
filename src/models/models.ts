@@ -11,12 +11,13 @@ export interface User {
 }
 
 export interface HomeNavigation {
-  currentPage: "Patient List" | "Add Patient";
+  currentPage: "Patient List" | "Add Patient" | "Patient" | "Admin" | undefined;
 }
 
 export interface Pacient extends Omit<User, "password" | "newPassword"> {
   id?: string;
   id_medic?: string;
+  profile_picture?: string;
   CNP_pacient: string;
   varsta_pacient: number;
   adresa_pacient: string;
