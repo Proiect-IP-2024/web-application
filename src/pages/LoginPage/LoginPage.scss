@@ -10,7 +10,8 @@
     @media screen and (min-height: 650px) {
         min-height: 100vh;
     }
-
+    .grid {
+        row-gap: 20px;
     h1,
     p {
         text-align: center;
@@ -21,13 +22,9 @@
     }
 
     input {
-        outline: none;
-        border:1px solid var(--c-white);
         background-color: var(--c-alto);
-        margin-bottom: 13px;
-        grid-column: 1 / span 6;
-        padding: 10px;
-        border-radius: 5px;
+            grid-column: 1 / span 6;
+            border-radius: 5px;
 
         @include breakpoint(t) {
             grid-column: 5 / span 4;
@@ -43,4 +40,13 @@
             border-color: var(--c-red);
         }
     }
+    .drop-menu {
+        grid-column: 1 / span 6;
+        background-color: var(--c-alto);
+
+        @include breakpoint(t) {
+            grid-column: 5 / span 4;
+        }
+    }
+}
 }

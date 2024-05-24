@@ -7,6 +7,11 @@ import Grid from "../../components/Grid/Grid";
 import { useUserStore } from "../../hooks/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { MyRoutes } from "../../routes/routes";
+import {
+  Box,
+  FormControl,
+  TextField,
+} from "@mui/material";
 
 interface UserData {
   email: string;
@@ -107,26 +112,34 @@ const LoginPage = () => {
         <Grid>
           <h1>Connect to your account</h1>
 
-          <input
-            type="text"
-            className={`f-18 ${error.email ? "error" : ""}`}
-            placeholder="Enter your email or username"
-            onChange={({ target }) =>
-              setUserData({ ...userData, email: target.value })
-            }
-            onKeyDown={handleKeyDown}
-          />
-
-          <input
-            type="password"
-            className={`f-18 ${error.password ? "error" : ""}`}
-            placeholder="Enter your password"
-            onChange={({ target }) =>
-              setUserData({ ...userData, password: target.value })
-            }
-            onKeyDown={handleKeyDown}
-          />
-
+          
+          <Box className={"drop-menu"}>
+            <FormControl fullWidth>
+              <TextField
+                type="email"
+                label="Email"
+                variant="outlined"
+                error={error.email}
+                onChange={({ target }) =>
+                  setUserData({ ...userData, email: target.value })
+                }
+              />
+            </FormControl>
+          </Box>
+          
+          <Box className={"drop-menu"}>
+            <FormControl fullWidth>
+              <TextField
+                type="password"
+                label="Password"
+                variant="outlined"
+                error={error.password}
+                onChange={({ target }) =>
+                  setUserData({ ...userData, password: target.value })
+                }
+              />
+            </FormControl>
+          </Box>
           {error.message && (
             <p className="f-18 error-message">{error.message}</p>
           )}
