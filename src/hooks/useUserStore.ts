@@ -147,12 +147,24 @@ export const useUserStore = () => {
   };
 
   const refreshUserToken = async () => {
+    let authTokenFromCokies = null;
+
     try {
-      if (!authToken) return false;
+      if (
+        cookies &&
+        process.env.COOKIE_NAME &&
+        cookies[process.env.COOKIE_NAME]
+      ) {
+        authTokenFromCokies = cookies[process.env.COOKIE_NAME]; 
+      } else if (cookies && cookies.ProiectIP2024) {
+        authTokenFromCokies = cookies.ProiectIP2024;
+      }
+
+      if (!authTokenFromCokies) return false;
 
       const response = await fetch(
         `${BASE_URL}${endpoints.RefreshToken}`,
-        createRequestOptions("GET", authToken)
+        createRequestOptions("GET", authTokenFromCokies)
       );
       const result = await response.json();
       if (response.ok) {
