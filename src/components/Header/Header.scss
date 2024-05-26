@@ -1,7 +1,10 @@
 header {
     background-color: var(--c-white);
+    
 
     .container {
+        display: flex;
+        justify-content: space-between;
         button {
             color: var(--c-mirage);
         }
@@ -13,5 +16,20 @@ header {
         .nav-item {
             background-color: red;
         }
+
+        .profile{
+            display:flex;
+            align-items: center;
+            gap:5px;
+            cursor:pointer;
+
+            .name{
+                color:var(--c-black)
+            }
+            .icon{
+                color:var(--c-black)
+            }
+        }
     }
+    
 }
