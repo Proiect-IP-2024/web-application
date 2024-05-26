@@ -11,6 +11,7 @@ import {
   joinRoom,
   leaveRoom,
 } from "../../services/socketService";
+import EKGChar from "../EKGChart/EKGChart";
 
 interface SensorData {
   valoare_puls: number;
@@ -123,7 +124,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
             </div>
           </div>
 
-          <div className="ecg"></div>
+          <EKGChar sensorData={sensorData} />
 
           <div className="gc-2">
             <div className="alergeni">
@@ -136,8 +137,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
           </div>
 
           <div className="istoric-medical">
-            <h3 >Istoric medical</h3>
-            
+            <h3>Istoric medical</h3>
           </div>
         </div>
       </Container>

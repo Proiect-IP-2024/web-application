@@ -1,10 +1,11 @@
 header {
     background-color: var(--c-white);
-    
+
 
     .container {
         display: flex;
         justify-content: space-between;
+
         button {
             color: var(--c-mirage);
         }
@@ -17,19 +18,25 @@ header {
             background-color: red;
         }
 
-        .profile{
-            display:flex;
+        .profile {
+            display: flex;
             align-items: center;
-            gap:5px;
-            cursor:pointer;
+            gap: 5px;
+            cursor: pointer;
 
-            .name{
-                color:var(--c-black)
+            .name {
+                color: var(--c-black);
+                margin: 0;
+
+                h1 {
+                    margin: 0;
+                }
             }
-            .icon{
-                color:var(--c-black)
+
+            .icon {
+                color: var(--c-black)
             }
         }
     }
-    
+
 }
