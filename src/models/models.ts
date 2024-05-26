@@ -17,6 +17,7 @@ export interface HomeNavigation {
     | "Patient"
     | "Admin"
     | "View Patient"
+    | "Profile"
     | undefined;
 }
 

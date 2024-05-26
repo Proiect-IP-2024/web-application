@@ -45,7 +45,6 @@ const LoginPage = () => {
     if (userData && userData.email && userData.password) {
       const isLogged = await login(userData.email, userData.password);
 
-      
       if (isLogged) {
         setError({
           email: false,
@@ -62,13 +61,13 @@ const LoginPage = () => {
         });
       }
     } else {
-      if (!userData.email && !userData.password)
+      if (!userData.email && !userData.password) {
         setError({
           email: true,
           password: true,
           message: "Email and Password are required",
         });
-      else if (!userData.email) {
+      } else if (!userData.email) {
         setError({
           email: true,
           password: false,
@@ -80,7 +79,9 @@ const LoginPage = () => {
           email: false,
           message: "Password is required",
         });
-      } else setError({ ...error, message: "" });
+      } else {
+        setError({ ...error, message: "" });
+      }
     }
   };
 
@@ -92,11 +93,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     getAuthTokenFromCookies();
-    document.addEventListener("keydown", handleKeyDown as any);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown as any);
-    };
   }, []);
 
   useEffect(() => {
@@ -111,7 +107,6 @@ const LoginPage = () => {
       <Container>
         <Grid>
           <h1>Connect to your account</h1>
-
           
           <Box className={"drop-menu"}>
             <FormControl fullWidth>
@@ -123,6 +118,8 @@ const LoginPage = () => {
                 onChange={({ target }) =>
                   setUserData({ ...userData, email: target.value })
                 }
+                value={userData.email}
+                onKeyDown={handleKeyDown}
               />
             </FormControl>
           </Box>
@@ -137,6 +134,8 @@ const LoginPage = () => {
                 onChange={({ target }) =>
                   setUserData({ ...userData, password: target.value })
                 }
+                value={userData.password}
+                onKeyDown={handleKeyDown}
               />
             </FormControl>
           </Box>

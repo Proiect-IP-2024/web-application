@@ -84,6 +84,7 @@ const MainLayout = ({
         <Header
           handleDrawerToggle={handleDrawerToggle}
           currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
       </AppBar>
 
