@@ -17,4 +17,5 @@ export const endpoints = {
   GetIngrijitorData: "/user/getIngrijitorData",
   GetAssignedPacients: "/user/getAssignedPacientList",
   GetUnassignedPacients: "/user/getUnassignedPacientList",
+  GetPacientProfile: "/user/getPacientProfile",
 };

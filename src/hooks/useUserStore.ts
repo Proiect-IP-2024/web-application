@@ -155,7 +155,7 @@ export const useUserStore = () => {
         process.env.COOKIE_NAME &&
         cookies[process.env.COOKIE_NAME]
       ) {
-        authTokenFromCokies = cookies[process.env.COOKIE_NAME]; 
+        authTokenFromCokies = cookies[process.env.COOKIE_NAME];
       } else if (cookies && cookies.ProiectIP2024) {
         authTokenFromCokies = cookies.ProiectIP2024;
       }
@@ -260,6 +260,49 @@ export const useUserStore = () => {
     }
   };
 
+  const GetPacientData = async (pacientID: string) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${endpoints.GetPacientData}`,
+        createRequestOptions("POST", authToken ?? undefined, {
+          pacientID,
+        })
+      );
+      const result = await response.json();
+      if (response.ok && result.pacient) {
+        return { isOk: true, response: result.pacient };
+      } else {
+        return { isOk: false, response: "User is not a message" };
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to get registered patients");
+      return { isOk: false, response: "User is not a message" };
+    }
+  };
+
+  const getPacientProfile = async (pacientID: string) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${endpoints.GetPacientProfile}`,
+        createRequestOptions("POST", authToken ?? undefined, {
+          pacientID,
+        })
+      );
+      const result = await response.json();
+
+      if (response.ok && result.pacient) {
+        return { isOk: true, response: result.pacient };
+      } else {
+        return { isOk: false, response: "Patient not found" };
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to get patient");
+      return { isOk: false, response: "Failed to get patient" };
+    }
+  }
+
   return {
     user,
     getAuthTokenFromCookies,
@@ -271,5 +314,7 @@ export const useUserStore = () => {
     refreshUserToken,
     getAssignedPacientsList,
     getUnassignedPacientsList,
+    GetPacientData,
+    getPacientProfile,
   };
 };

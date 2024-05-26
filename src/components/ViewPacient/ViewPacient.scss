@@ -1,0 +1,121 @@
+@use "../../styles/mixins.scss" as *;
+
+$verticalspace: 30px;
+
+
+.view-pacient {
+    margin-top: 70px;
+
+    .container {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+
+        display: flex;
+
+        .pacinet-card {
+            width: 300px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: var(--c-white);
+            padding: 10px;
+
+            @include breakpoint (t) {
+                min-height: 100vh;
+            }
+
+            .profile {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+
+                svg {
+                    width: 50%;
+                    height: auto;
+                }
+            }
+
+            .name,
+            .gender {
+                text-align: center;
+            }
+
+            .general-information {
+                &>div {
+                    p {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .pacient-details {
+            width: calc(100% - 300px);
+            margin-top: 10px;
+
+            .pacient-details-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                margin-left: 10px;
+                margin-right: 10px;
+
+                @include breakpoint (ds) {
+                    justify-content: space-between;
+                }
+
+                .box {
+                    width: calc((100% - 20px * 4) / 3);
+                    min-width: 100px;
+                    background: var(--c-white);
+                    padding: 10px;
+                    border-radius: 5px;
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+                    &>* {
+                        margin: 0;
+                    }
+                }
+            }
+
+            .gc-2 {
+                margin-top: $verticalspace;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                margin-left: 10px;
+                margin-right: 10px;
+
+                @include breakpoint (ds) {
+                    justify-content: space-between;
+                }
+
+                &>div {
+                    width: calc((100% - 20px * 3) / 2);
+                    background-color: var(--c-white);
+                    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                    padding: 10px;
+                    border-radius: 10px;
+
+                    h3 {
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            .istoric-medical {
+                margin-top: $verticalspace;
+                margin-left: 10px;
+                margin-right: 10px;
+                background-color: var(--c-white);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                border-radius: 10px;
+
+            }
+        }
+    }
+}

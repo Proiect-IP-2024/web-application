@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Container from "../Container/Container";
 import Grid from "../Grid/Grid";
 import { useUserStore } from "../../hooks/useUserStore";
 import "./ListaPacienti.scss";
-import { Pacient } from "../../models/models";
+import { HomeNavigation, Pacient } from "../../models/models";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const ListaPacienti = () => {
+const ListaPacienti = ({
+  setPacientID,
+  setCurrentPage,
+}: {
+  setPacientID: Dispatch<SetStateAction<string | null>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<HomeNavigation>>;
+}) => {
   const { getAssignedPacientsList, authToken } = useUserStore();
   const [pacientList, setPacientList] = useState<Pacient[]>([]);
 
@@ -40,7 +46,15 @@ const ListaPacienti = () => {
                 </div>
 
                 <div className="actions">
-                  <p className="view-pacinet">View pacient</p>
+                  <p
+                    className="view-pacinet"
+                    onClick={() => {
+                      setPacientID(pacient.id);
+                      setCurrentPage({ currentPage: "View Patient" });
+                    }}
+                  >
+                    View pacient
+                  </p>
                 </div>
               </div>
             ))

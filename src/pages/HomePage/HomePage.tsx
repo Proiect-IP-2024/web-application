@@ -6,9 +6,11 @@ import AddPacientList from "../../components/AddPacientList/AddPacientList";
 import { useUserStore } from "../../hooks/useUserStore";
 import AdminPannel from "../../components/AdminPannel/AdminPannel";
 import PatientPannel from "../../components/PatientPannel/PatientPannel";
+import ViewPacient from "../../components/ViewPacient/ViewPacient";
 
 const HomePage = () => {
   const { user } = useUserStore();
+  const [pacientID, setPacientID] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<HomeNavigation>({
     currentPage: undefined,
   });
@@ -26,7 +28,7 @@ const HomePage = () => {
   return (
     <MainLayout currentPage={currentPage} setCurrentPage={setCurrentPage}>
       {currentPage.currentPage === "Patient List" && user?.userPower !== 5 && (
-        <ListaPacienti />
+        <ListaPacienti setPacientID={setPacientID} setCurrentPage={setCurrentPage} />
       )}
       {currentPage.currentPage === "Add Patient" && user?.userPower !== 5 && (
         <AddPacientList />
@@ -37,6 +39,9 @@ const HomePage = () => {
       {currentPage.currentPage === "Admin" && user?.userPower === 1 && (
         <AdminPannel />
       )}
+      {currentPage.currentPage === "View Patient" &&
+        pacientID &&
+        user?.userPower !== 5 && <ViewPacient pacientID={pacientID} />}
     </MainLayout>
   );
 };
