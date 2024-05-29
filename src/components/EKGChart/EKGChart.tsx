@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,8 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useEffect, useState } from "react";
-import { SensorData } from "../../models/models";
+import jsonData from "./EKG.json"; // Importing JSON data
 
 ChartJS.register(
   CategoryScale,
@@ -23,31 +22,35 @@ ChartJS.register(
   Legend
 );
 
-const EKGChar = ({ sensorData }: { sensorData: any }) => {
+const EKGChart = () => {
+  const [sensorData, setSensorData] = useState<number[]>([]);
   const [data, setData] = useState<number[]>([]);
 
-  //   useEffect(() => {
-  //     const interval = setInterval(() => {
-  //       setData((prev) => {
-  //         if (prev.length > 10) {
-  //           prev.shift();
-  //         }
-  //         return [...prev, Math.floor(Math.random() * 100)];
-  //       });
-  //     }, 500);
-  //     return () => clearInterval(interval);
-  //   }, []);
+  useEffect(() => {
+    setSensorData(jsonData);
+  }, []);
 
   useEffect(() => {
-    console.log(sensorData);
-    if (sensorData === null) return;
+    // Set the initial data to be the first chunk of sensorData
+    if (sensorData.length > 0) {
+      setData(sensorData.slice(0, 11)); // Set initial chunk of 11 elements
+    }
 
-    setData((prev) => {
-      if (prev.length > 10) {
-        prev.shift();
-      }
-      return [...prev, sensorData.valoare_puls];
-    });
+    const interval = setInterval(() => {
+      setSensorData((prevSensorData) => {
+        if (prevSensorData.length === 0) return prevSensorData;
+
+        // Take the next chunk of 11 elements
+        const newData = prevSensorData.slice(0, 11);
+        setData(newData);
+
+        // Remove the first chunk from sensorData
+        return prevSensorData.slice(11);
+      });
+    }, 3000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
   }, [sensorData]);
 
   return (
@@ -61,7 +64,7 @@ const EKGChar = ({ sensorData }: { sensorData: any }) => {
               data: data,
               fill: false,
               borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
+              tension: 0.2,
             },
           ],
         }}
@@ -79,4 +82,4 @@ const EKGChar = ({ sensorData }: { sensorData: any }) => {
   );
 };
 
-export default EKGChar;
+export default EKGChart;

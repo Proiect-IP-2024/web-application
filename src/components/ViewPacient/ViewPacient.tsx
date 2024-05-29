@@ -179,7 +179,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
               </div>
             </div>
 
-            <EKGChar sensorData={sensorData} />
+            <EKGChar />
 
             <div className="gc-2">
               <div className="alergeni">
@@ -197,7 +197,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
           </div>
         </Container>
       </section>
-      
+
       <SetAlarms
         selectedValue={selectedAlarmsValue}
         setSelectedValue={setSelectedAlarmsValue}
