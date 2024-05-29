@@ -14,6 +14,10 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import RegisterPacient from "../../components/RegisterPacient/RegisterPacient";
+import RegisterMedic from "../../components/RegisterMedic/RegisterMedic";
+import RegisterIngrijitor from "../../components/RegisterIngrijitor/RegisterIngrijitor";
+import RegisterAdmin from "../../components/RegisterAdmin/RegisterAdmin";
 
 interface UserData {
   firstName: string;
@@ -31,7 +35,7 @@ interface Error {
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [accountType, setAccountType] = useState<number>(1);
-  const { getAuthTokenFromCookies, authToken, register } = useUserStore();
+  const { getAuthTokenFromCookies, authToken } = useUserStore();
   const [userData, setUserData] = useState<UserData>({
     email: "",
     firstName: "",
@@ -44,39 +48,6 @@ const RegisterPage = () => {
     password: false,
     message: "",
   });
-
-  const handleRegister = async () => {
-    if (userData && userData.email && userData.password) {
-      const result = 
-
-      navigate(MyRoutes.LoginPage);
-      setError({
-        email: false,
-        password: false,
-        message: "",
-      });
-    } else {
-      if (!userData.email && !userData.password)
-        setError({
-          email: true,
-          password: true,
-          message: "Email and Password are required",
-        });
-      else if (!userData.email) {
-        setError({
-          email: true,
-          password: false,
-          message: "Email is required",
-        });
-      } else if (!userData.password) {
-        setError({
-          password: true,
-          email: false,
-          message: "Password is required",
-        });
-      } else setError({ ...error, message: "" });
-    }
-  };
 
   useEffect(() => {
     getAuthTokenFromCookies();
@@ -173,23 +144,37 @@ const RegisterPage = () => {
             </FormControl>
           </Box>
 
-          {accountType > 1 && (
-            <Box className={"drop-menu"}>
-              <FormControl fullWidth>
-                <TextField type="password" label="Code" variant="outlined" />
-              </FormControl>
-            </Box>
+          {accountType === 1 && (
+            <RegisterPacient
+              userData={userData}
+              firstError={error}
+              setFirstError={setError}
+            />
           )}
 
-          {error.message && (
-            <p className="f-18 error-message">{error.message}</p>
+          {accountType === 2 && (
+            <RegisterIngrijitor
+              userData={userData}
+              firstError={error}
+              setFirstError={setError}
+            />
           )}
-          <input
-            type="button"
-            value="Create account"
-            className="f-18 register-button"
-            onClick={handleRegister}
-          />
+
+          {accountType === 3 && (
+            <RegisterMedic
+              userData={userData}
+              firstError={error}
+              setFirstError={setError}
+            />
+          )}
+
+          {accountType === 4 && (
+            <RegisterAdmin
+              userData={userData}
+              firstError={error}
+              setFirstError={setError}
+            />
+          )}
 
           <p className="f-18">
             Already have an account? <a href={MyRoutes.LoginPage}>Login</a>

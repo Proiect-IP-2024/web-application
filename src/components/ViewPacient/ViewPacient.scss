@@ -41,11 +41,24 @@ $verticalspace: 30px;
 
             .general-information {
                 &>div {
+
+                    a,
                     p {
+                        text-decoration: none;
+                        color: var(--c-black);
                         display: flex;
                         justify-content: space-between;
                         width: 100%;
                     }
+                }
+
+                .options {
+                    margin-top: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
                 }
             }
         }

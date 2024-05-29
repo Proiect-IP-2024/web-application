@@ -62,11 +62,12 @@ export interface Medicament {
 }
 
 export interface Recomandare {
-  id_recomandare: number;
+  id_recomandare?: number;
+  CNP_pacient: string;
   tip_recomandare: string;
-  durata_zilnica: number;
-  alte_indicatii: string;
-  tratamente: string;
+  durata_zilnica?: number;
+  alte_indicatii?: string;
+  tratamente?: string;
 }
 
 export interface AlertaAutomata {
@@ -104,4 +105,13 @@ export interface AllPacientData extends Pacient {
 
 export interface Medic extends Omit<User, "password" | "newPassword"> {
   telefon: string;
+}
+
+export interface Alarms {
+  puls_max: number;
+  puls_min: number;
+  temperatura_max: number;
+  temperatura_min: number;
+  umiditate_max: number;
+  umiditate_min: number;
 }

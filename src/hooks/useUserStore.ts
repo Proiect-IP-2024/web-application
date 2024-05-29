@@ -188,8 +188,6 @@ export const useUserStore = () => {
     lastName: string,
     email: string,
     password: string,
-    accoutType: number,
-    securityCore: string
   ) => {
     try {
       const response = await fetch(
