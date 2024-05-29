@@ -24,5 +24,7 @@ export const endpoints = {
   AddIngrijitor: "/user/addIngrijitor",
   AddAdmin: "/user/setAdmin",
 
+  SetAlarmConfigToPacient: '/pacient/setAlarmConfigToPacient',
+
   SetRecomandareMedic: "/user/setRecomandareMedic",
 };

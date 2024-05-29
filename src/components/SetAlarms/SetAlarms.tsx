@@ -5,9 +5,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { TextField } from "@mui/material";
 import { Alarms } from "../../models/models";
-import { useEffect } from "react";
+import { useMedic } from "../../hooks/useMedic";
+import { useState } from "react";
 
-export interface SimpleDialogProps {
+interface SimpleDialogProps {
+  fetchPacientProfile: () => void;
+  CNP_pacient: string;
+  pacientID: string;
   open: boolean;
   selectedValue: Alarms | null;
   setSelectedValue: (value: Alarms) => void;
@@ -15,16 +19,40 @@ export interface SimpleDialogProps {
 }
 
 const SetAlarms = ({
+  fetchPacientProfile,
+  CNP_pacient,
+  pacientID,
   open,
   selectedValue,
   setSelectedValue,
   onClose,
 }: SimpleDialogProps) => {
+  const [error, setError] = useState<boolean>(false);
 
-  
-  useEffect(() => {
-    console.warn("Selected Values: ", selectedValue);
-  }, [selectedValue]);
+  const { setAlarmConfigToPacient } = useMedic();
+
+  const handleSetAlarms = async () => {
+    if (selectedValue === null) {
+      setError(true);
+      return false;
+    }
+
+    const result = await setAlarmConfigToPacient({
+      alarmConfiguration: { ...selectedValue },
+      pacientID,
+      CNP_pacient,
+    });
+
+    if (result) {
+      fetchPacientProfile();
+      onClose();
+      setError(false);
+      return true;
+    } else {
+      setError(true);
+      return false;
+    }
+  };
 
   return (
     <Dialog onClose={onClose} open={open}>
@@ -118,7 +146,9 @@ const SetAlarms = ({
             </ListItem>
             <ListItem disableGutters>
               <ListItemButton
-                onClick={() => onClose()}
+                onClick={() => {
+                  handleSetAlarms();
+                }}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -131,7 +161,10 @@ const SetAlarms = ({
             </ListItem>
             <ListItem disableGutters>
               <ListItemButton
-                onClick={() => onClose()}
+                onClick={() => {
+                  onClose();
+                  setError(false);
+                }}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -142,6 +175,11 @@ const SetAlarms = ({
                 Close
               </ListItemButton>
             </ListItem>
+            {error && (
+              <ListItem disableGutters>
+                <p style={{ color: "red" }}>Please enter the correct values.</p>
+              </ListItem>
+            )}
           </>
         )}
       </List>

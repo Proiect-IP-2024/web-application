@@ -99,7 +99,17 @@ export interface AllPacientData extends Pacient {
   tratament?: Tratament[];
   medicament?: Medicament[];
   recomandare?: Recomandare[];
-  alerta_automata?: AlertaAutomata[];
+  alerta_automata?: {
+    CNP_pacient: string;
+    id_configurare_alerta: number;
+    id_medic: number;
+    puls_valoare_maxima: number;
+    puls_valoare_minima: number;
+    temperatura_valoare_maxima: number;
+    temperatura_valoare_minima: number;
+    umiditate_valoare_maxima: number;
+    umiditate_valoare_minima: number;
+  };
   sensor_data?: SensorData[];
 }
 

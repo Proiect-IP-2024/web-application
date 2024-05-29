@@ -33,14 +33,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
     useState(false);
 
   const [selectedAlarmsValue, setSelectedAlarmsValue] = useState<Alarms | null>(
-    {
-      puls_max: 120,
-      puls_min: 40,
-      temperatura_max: 37,
-      temperatura_min: 25,
-      umiditate_max: 0.96,
-      umiditate_min: 0,
-    }
+    null
   );
 
   const [selectedRecomandationValue, setSelectedRecomandationValue] =
@@ -69,6 +62,21 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
   useEffect(() => {
     fetchPacientProfile();
   }, [pacientID]);
+
+  useEffect(() => {
+    setSelectedAlarmsValue({
+      puls_max: pacientData?.alerta_automata?.puls_valoare_maxima ?? 120,
+      puls_min: pacientData?.alerta_automata?.puls_valoare_minima ?? 40,
+      temperatura_max:
+        pacientData?.alerta_automata?.temperatura_valoare_maxima ?? 37,
+      temperatura_min:
+        pacientData?.alerta_automata?.temperatura_valoare_minima ?? 25,
+      umiditate_max:
+        pacientData?.alerta_automata?.umiditate_valoare_maxima ?? 0.96,
+      umiditate_min:
+        pacientData?.alerta_automata?.umiditate_valoare_minima ?? 0,
+    });
+  }, [pacientData]);
 
   useEffect(() => {
     if (pacientData && pacientData.CNP_pacient) {
@@ -183,11 +191,32 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
 
             <div className="gc-2">
               <div className="alergeni">
-                <h3>Alergeni</h3>
-                <p>{pacientData?.alergii}</p>
+                <h3>Allergens</h3>
+                <p>{pacientData?.alergii ?? "No allergens"}</p>
               </div>
               <div className="alarme">
-                <h3>Alarme</h3>
+                <h3>Alarms</h3>
+                {pacientData?.alerta_automata ? (
+                  <div className="params">
+                    <p>
+                      Pulse: {pacientData?.alerta_automata.puls_valoare_maxima}{" "}
+                      - {pacientData?.alerta_automata.puls_valoare_minima}
+                    </p>
+                    <p>
+                      Temperature:{" "}
+                      {pacientData?.alerta_automata.temperatura_valoare_maxima}{" "}
+                      -{" "}
+                      {pacientData?.alerta_automata.temperatura_valoare_minima}
+                    </p>
+                    <p>
+                      Humidity:{" "}
+                      {pacientData?.alerta_automata.umiditate_valoare_maxima} -{" "}
+                      {pacientData?.alerta_automata.umiditate_valoare_minima}
+                    </p>
+                  </div>
+                ) : (
+                  <p>No alarms set</p>
+                )}
               </div>
             </div>
 
@@ -198,19 +227,27 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
         </Container>
       </section>
 
-      <SetAlarms
-        selectedValue={selectedAlarmsValue}
-        setSelectedValue={setSelectedAlarmsValue}
-        open={isAlarmsModalOpen}
-        onClose={handleClose}
-      />
+      {pacientData?.CNP_pacient && (
+        <>
+          <SetAlarms
+            CNP_pacient={pacientData.CNP_pacient}
+            pacientID={pacientID}
+            selectedValue={selectedAlarmsValue}
+            setSelectedValue={setSelectedAlarmsValue}
+            open={isAlarmsModalOpen}
+            onClose={handleClose}
+            fetchPacientProfile={fetchPacientProfile}
+          />
 
-      <AddRecomandation
-        open={isRecomandationModalOpen}
-        selectedValue={selectedRecomandationValue}
-        setSelectedValue={setSelectedRecomandationValue}
-        onClose={handleClose}
-      />
+          <AddRecomandation
+            CNP_pacient={pacientData.CNP_pacient}
+            open={isRecomandationModalOpen}
+            selectedValue={selectedRecomandationValue}
+            setSelectedValue={setSelectedRecomandationValue}
+            onClose={handleClose}
+          />
+        </>
+      )}
     </>
   );
 };

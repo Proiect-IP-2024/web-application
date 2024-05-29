@@ -1,4 +1,4 @@
-import { Medic, Recomandare } from "../models/models";
+import { Alarms, Medic, Recomandare } from "../models/models";
 import { BASE_URL, endpoints } from "../routes/routes";
 import { createRequestOptions } from "../utils/utils";
 import { useUserStore } from "./useUserStore";
@@ -80,8 +80,42 @@ export const useMedic = () => {
     return false;
   };
 
+  const setAlarmConfigToPacient = async ({
+    alarmConfiguration,
+    pacientID,
+    CNP_pacient,
+  }: {
+    CNP_pacient: string;
+    alarmConfiguration: Alarms;
+    pacientID: string;
+  }) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${endpoints.SetAlarmConfigToPacient}`,
+        createRequestOptions("POST", authToken ?? undefined, {
+          userData: {
+            pacientID,
+            CNP_pacient,
+            alarms: { ...alarmConfiguration },
+          },
+        })
+      );
+
+      if (!response.ok) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      console.log(e);
+      console.log("Failed to set alarm to pacient");
+    }
+    return false;
+  };
+
   return {
     setRecomandareMedic,
+    setAlarmConfigToPacient,
     registerMedic,
   };
 };

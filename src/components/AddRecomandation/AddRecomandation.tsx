@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useMedic } from "../../hooks/useMedic";
 
 export interface AddRecomandationProps {
+  CNP_pacient: string;
   open: boolean;
   selectedValue: Recomandare | null;
   setSelectedValue: (value: Recomandare) => void;
@@ -16,6 +17,7 @@ export interface AddRecomandationProps {
 }
 
 const AddRecomandation = ({
+  CNP_pacient,
   open,
   selectedValue,
   setSelectedValue,
