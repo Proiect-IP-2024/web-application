@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import Container from "../Container/Container";
 import "./ViewPacient.scss";
-import { Alarms, AllPacientData, Recomandare } from "../../models/models";
+import {
+  Alarms,
+  AllPacientData,
+  Istoric_Alarme,
+  Recomandare,
+} from "../../models/models";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useUserStore } from "../../hooks/useUserStore";
 import {
@@ -15,6 +20,7 @@ import EKGChar from "../EKGChart/EKGChart";
 import { Button } from "@mui/material";
 import SetAlarms from "../SetAlarms/SetAlarms";
 import AddRecomandation from "../AddRecomandation/AddRecomandation";
+import { usePacient } from "../../hooks/usePacient";
 
 interface SensorData {
   valoare_puls: number;
@@ -24,10 +30,11 @@ interface SensorData {
 }
 
 const ViewPacient = ({ pacientID }: { pacientID: string }) => {
+  const { getIstoricAlarme } = usePacient();
   const { getPacientProfile } = useUserStore();
   const [pacientData, setPacientData] = useState<AllPacientData | null>(null);
   const [sensorData, setSensorData] = useState<SensorData | null>(null);
-
+  const [istoricAlarme, setIstoricAlarme] = useState<Istoric_Alarme[]>();
   const [isAlarmsModalOpen, setIsAlarmsModalOpen] = useState(false);
   const [isRecomandationModalOpen, setIsRecomandationModalOpen] =
     useState(false);
@@ -48,6 +55,17 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
   const handleClose = () => {
     setIsAlarmsModalOpen(false);
     setIsRecomandationModalOpen(false);
+  };
+
+  const fetchIstoricAlarme = async () => {
+    if (!pacientData?.CNP_pacient) {
+      setIstoricAlarme([]);
+
+      return false;
+    }
+    const result = await getIstoricAlarme(pacientData?.CNP_pacient);
+
+    setIstoricAlarme(result?.data.alarms);
   };
 
   const fetchPacientProfile = async () => {
@@ -76,6 +94,15 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
       umiditate_min:
         pacientData?.alerta_automata?.umiditate_valoare_minima ?? 0,
     });
+  }, [pacientData]);
+
+  useEffect(() => {
+    fetchIstoricAlarme();
+    const interval = setInterval(fetchIstoricAlarme, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [pacientData]);
 
   useEffect(() => {
@@ -221,8 +248,28 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
             </div>
 
             <div className="istoric-medical">
-              <h3>Istoric medical</h3>
+              <h3>Istoric alarme</h3>
+              {istoricAlarme?.map((alarma, index) => (
+                <div
+                  className={`alarm${alarma.resolved ? "" : " active"}`}
+                  key={index}
+                >
+                  {alarma.puls !== null ? (
+                    <p>{alarma.puls}</p>
+                  ) : alarma.temperatura !== null ? (
+                    <p>{alarma.temperatura}</p>
+                  ) : alarma.umiditate !== null ? (
+                    <p>{alarma.umiditate}</p>
+                  ) : (
+                    <p>Alarma Senzori</p>
+                  )}
+                  <p className="date">30.05.2024</p>
+                </div>
+              ))}
             </div>
+
+              
+
           </div>
         </Container>
       </section>

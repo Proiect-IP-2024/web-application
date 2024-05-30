@@ -1,8 +1,11 @@
 import { Pacient } from "../models/models";
 import { BASE_URL, endpoints } from "../routes/routes";
 import { createRequestOptions } from "../utils/utils";
+import { useUserStore } from "./useUserStore";
 
 export const usePacient = () => {
+  const { authToken } = useUserStore();
+
   const registerPacient = async ({
     pacient,
     password,
@@ -63,7 +66,30 @@ export const usePacient = () => {
     return false;
   };
 
+  const getIstoricAlarme = async (CNP_pacient: string) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}${endpoints.GetIstoricAlarme}`,
+        createRequestOptions("POST", authToken ?? undefined, {
+          userData: {
+            CNP_pacient,
+          },
+        })
+      );
+      if (!response.ok) {
+        return { isOk: false, data: null };
+      }
+
+      const result = await response.json();
+      return { isOk: true, data: result };
+    } catch (e) {
+      console.error(e);
+      return { isOk: false, data: null };
+    }
+  };
+
   return {
     registerPacient,
+    getIstoricAlarme,
   };
 };

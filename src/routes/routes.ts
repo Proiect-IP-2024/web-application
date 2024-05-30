@@ -18,13 +18,14 @@ export const endpoints = {
   GetAssignedPacients: "/user/getAssignedPacientList",
   GetUnassignedPacients: "/user/getUnassignedPacientList",
   GetPacientProfile: "/user/getPacientProfile",
+  GetIstoricAlarme: "/pacient/getIstoricAlarme",
 
   AddPacient: "/user/addPacient",
   AddMedic: "/user/addMedic",
   AddIngrijitor: "/user/addIngrijitor",
   AddAdmin: "/user/setAdmin",
 
-  SetAlarmConfigToPacient: '/pacient/setAlarmConfigToPacient',
+  SetAlarmConfigToPacient: "/pacient/setAlarmConfigToPacient",
 
   SetRecomandareMedic: "/user/setRecomandareMedic",
 };

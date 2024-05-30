@@ -125,3 +125,15 @@ export interface Alarms {
   umiditate_max: number;
   umiditate_min: number;
 }
+
+export interface Istoric_Alarme {
+  id_alerta_automata: number;
+  data_alerta_automata: Date;
+  data_rezolvare_alerta: Date | null;
+  CNP_pacient: string;
+  umiditate: number | null;
+  temperatura: number | null;
+  puls: number | null;
+  resolved: boolean | null;
+  resolved_by: string | null;
+}
