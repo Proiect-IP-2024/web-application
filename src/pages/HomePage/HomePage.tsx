@@ -5,8 +5,9 @@ import ListaPacienti from "../../components/ListaPacienti/ListaPacienti";
 import AddPacientList from "../../components/AddPacientList/AddPacientList";
 import { useUserStore } from "../../hooks/useUserStore";
 import AdminPannel from "../../components/AdminPannel/AdminPannel";
-import PatientPannel from "../../components/PatientPannel/PatientPannel";
 import ViewPacient from "../../components/ViewPacient/ViewPacient";
+
+import PatientPannel from "../../components/PatientPannel/PatientPannel";
 import ProfileScreen from "../../components/ProfileScreen/ProfileScreen";
 
 const HomePage = () => {
@@ -26,6 +27,10 @@ const HomePage = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <MainLayout currentPage={currentPage} setCurrentPage={setCurrentPage}>
       {currentPage.currentPage === "Patient List" && user?.userPower !== 5 && (
@@ -37,16 +42,21 @@ const HomePage = () => {
       {currentPage.currentPage === "Add Patient" && user?.userPower !== 5 && (
         <AddPacientList />
       )}
-      {currentPage.currentPage === "Patient" && user?.userPower === 5 && (
-        <PatientPannel />
-      )}
+      {currentPage.currentPage === "Patient" &&
+        user &&
+        user.user_id &&
+        user.userPower === 5 && (
+          <ViewPacient pacientID={user.user_id} showOptions={false} />
+        )}
+
       {currentPage.currentPage === "Admin" && user?.userPower === 1 && (
         <AdminPannel />
       )}
       {currentPage.currentPage === "View Patient" &&
         pacientID &&
-        user?.userPower !== 5 && <ViewPacient pacientID={pacientID} />}
-      {currentPage.currentPage === "Profile" && <ProfileScreen />}
+        user?.userPower !== 5 && (
+          <ViewPacient pacientID={pacientID} showOptions={true} />
+        )}
     </MainLayout>
   );
 };

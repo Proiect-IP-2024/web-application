@@ -69,11 +69,10 @@ const Header = ({
             >
               <MenuItem
                 onClick={() => {
-                  setCurrentPage({ currentPage: "Profile" });
-                  handleClose();
+                  handleClose()
                 }}
               >
-                Profile
+                Close
               </MenuItem>
             </Menu>
           </>

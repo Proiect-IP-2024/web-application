@@ -29,7 +29,13 @@ interface SensorData {
   valoare_umiditate: number;
 }
 
-const ViewPacient = ({ pacientID }: { pacientID: string }) => {
+const ViewPacient = ({
+  pacientID,
+  showOptions,
+}: {
+  pacientID: string;
+  showOptions?: boolean;
+}) => {
   const { getIstoricAlarme } = usePacient();
   const { getPacientProfile } = useUserStore();
   const [pacientData, setPacientData] = useState<AllPacientData | null>(null);
@@ -171,30 +177,31 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
                     Phone Number: <b>{`${pacientData?.telefon_pacient}`}</b>
                   </a>
                 </div>
-
-                <div className="options">
-                  <Button variant="outlined" sx={{ width: "90%" }}>
-                    Edit patient
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{ width: "90%" }}
-                    onClick={() => {
-                      setIsRecomandationModalOpen(true);
-                    }}
-                  >
-                    Add recomandation
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{ width: "90%" }}
-                    onClick={() => {
-                      setIsAlarmsModalOpen(true);
-                    }}
-                  >
-                    Set Alarms
-                  </Button>
-                </div>
+                {showOptions && (
+                  <div className="options">
+                    <Button variant="outlined" sx={{ width: "90%" }}>
+                      Edit patient
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      sx={{ width: "90%" }}
+                      onClick={() => {
+                        setIsRecomandationModalOpen(true);
+                      }}
+                    >
+                      Add recomandation
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      sx={{ width: "90%" }}
+                      onClick={() => {
+                        setIsAlarmsModalOpen(true);
+                      }}
+                    >
+                      Set Alarms
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -249,27 +256,82 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
 
             <div className="istoric-medical">
               <h3>Istoric alarme</h3>
-              {istoricAlarme?.map((alarma, index) => (
-                <div
-                  className={`alarm${alarma.resolved ? "" : " active"}`}
-                  key={index}
-                >
-                  {alarma.puls !== null ? (
-                    <p>{alarma.puls}</p>
-                  ) : alarma.temperatura !== null ? (
-                    <p>{alarma.temperatura}</p>
-                  ) : alarma.umiditate !== null ? (
-                    <p>{alarma.umiditate}</p>
-                  ) : (
+              {istoricAlarme &&
+                istoricAlarme.map((alarma, index) => (
+                  <div
+                    className={`alarm${alarma.resolved ? "" : " active"}`}
+                    key={index}
+                  >
                     <p>Alarma Senzori</p>
-                  )}
-                  <p className="date">30.05.2024</p>
-                </div>
-              ))}
+                    {alarma.data_alerta_automata && (
+                      <p className="date">
+                        {`${new Date(
+                          alarma.data_alerta_automata
+                        ).getDay()}.${new Date(
+                          alarma.data_alerta_automata
+                        ).getMonth()}.${new Date(
+                          alarma.data_alerta_automata
+                        ).getUTCFullYear()}`}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              {!istoricAlarme && <p>No alarms</p>}
             </div>
 
-              
+            <div className="recomandari">
+              <h3>Recomandari</h3>
+              {pacientData &&
+                pacientData.recomandare &&
+                pacientData.recomandare.map((recomandare, index) => (
+                  <div className="recomandare" key={index}>
+                    <p>Tip recomandare:</p>
+                    <p>{recomandare.tip_recomandare}</p>
+                    <p>Durata recomandare:</p>
+                    <p>{recomandare.durata_zilnica}</p>
+                    <p>Alte indicatii:</p>
+                    <p>{recomandare.alte_indicatii}</p>
+                  </div>
+                ))}
+              {!(pacientData && pacientData.recomandare) && (
+                <p>Nu sunt inregistrate recomandari</p>
+              )}
+            </div>
 
+            <div className="diagnostice">
+              <h3>Diagnostic</h3>
+              {pacientData &&
+                pacientData.diagnostic &&
+                pacientData.diagnostic.map((diagnostic, index) => (
+                  <div className="diagnostic" key={index}>
+                    <p>Diagnostic: {diagnostic.diagnostic}</p>
+                    <p>Alte Detalii: {diagnostic.alte_detalii}</p>
+                    <p>
+                      Data:{" "}
+                      {new Date(diagnostic.data_emitere).getDate() +
+                        "." +
+                        new Date(diagnostic.data_emitere).getMonth() +
+                        "." +
+                        new Date(diagnostic.data_emitere).getUTCFullYear()}
+                    </p>
+                  </div>
+                ))}
+              {!(pacientData && pacientData.diagnostic) && (
+                <p>Nu exista un diagnostic</p>
+              )}
+            </div>
+
+            <div className="medicamentatie">
+              <h3>Medicamentatie</h3>
+              {pacientData &&
+                pacientData.medicament &&
+                pacientData.medicament.map((medicament, index) => (
+                  <div className="medicament" key={index}>
+                    <p>Nume medicament: {medicament.nume_medicament}</p>
+                    <p>Frecventa: {medicament.frecventa}</p>
+                  </div>
+                ))}
+            </div>
           </div>
         </Container>
       </section>
@@ -292,6 +354,7 @@ const ViewPacient = ({ pacientID }: { pacientID: string }) => {
             selectedValue={selectedRecomandationValue}
             setSelectedValue={setSelectedRecomandationValue}
             onClose={handleClose}
+            fetchPacientProfile={fetchPacientProfile}
           />
         </>
       )}

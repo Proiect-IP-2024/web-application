@@ -48,6 +48,7 @@ $verticalspace: 30px;
                         color: var(--c-black);
                         display: flex;
                         justify-content: space-between;
+                        flex-wrap: wrap;
                         width: 100%;
                     }
                 }
@@ -155,6 +156,62 @@ $verticalspace: 30px;
 
                 }
 
+            }
+
+            .recomandari {
+                margin-top: $verticalspace;
+                margin-left: 10px;
+                margin-right: 10px;
+                background-color: var(--c-white);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                border-radius: 10px;
+
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+
+                h3 {
+                    grid-column: 1 /span 2;
+                }
+
+                .recomandare {
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                    margin: 20px;
+                }
+
+            }
+
+            .diagnostice {
+                margin-top: $verticalspace;
+                margin-left: 10px;
+                margin-right: 10px;
+                background-color: var(--c-white);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                border-radius: 10px;
+
+                .diagnostic {
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                    margin: 20px;
+                }
+            }
+
+            .medicamentatie {
+                margin-top: $verticalspace;
+                margin-left: 10px;
+                margin-right: 10px;
+                background-color: var(--c-white);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                border-radius: 10px;
+
+                .medicament {
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                    margin: 20px;
+                }
             }
         }
     }

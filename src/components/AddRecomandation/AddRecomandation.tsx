@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useMedic } from "../../hooks/useMedic";
 
 export interface AddRecomandationProps {
+  fetchPacientProfile: () => void;
   CNP_pacient: string;
   open: boolean;
   selectedValue: Recomandare | null;
@@ -17,6 +18,7 @@ export interface AddRecomandationProps {
 }
 
 const AddRecomandation = ({
+  fetchPacientProfile,
   CNP_pacient,
   open,
   selectedValue,
@@ -27,7 +29,15 @@ const AddRecomandation = ({
 
   const handleSetRecomandare = async () => {
     if (selectedValue && selectedValue.CNP_pacient) {
-      await setRecomandareMedic(selectedValue);
+      const response = await setRecomandareMedic({
+        ...selectedValue,
+        CNP_pacient: CNP_pacient,
+      });
+
+      if (response) {
+        fetchPacientProfile();
+      }
+
       onClose();
     }
   };

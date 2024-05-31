@@ -13,9 +13,12 @@ export const useMedic = () => {
         userData,
       })
     );
-    const result = await response.json();
-
-    console.log("setRecomandare: ", result);
+    
+    if(response.ok) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const registerMedic = async ({

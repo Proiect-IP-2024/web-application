@@ -1,7 +1,7 @@
 export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 export interface User {
-  id: string;
+  user_id: string;
   first_name: string;
   last_name: string;
   password: string;
@@ -43,7 +43,7 @@ export interface Consult {
 export interface Diagnostic {
   id_diagnostic: string;
   diagnostic: string;
-  data_emiterii: string;
+  data_emitere: string;
   alte_detalii: string;
 }
 
@@ -91,6 +91,7 @@ export interface SensorData {
 }
 
 export interface AllPacientData extends Pacient {
+  id?: string
   ID_date_medicale: string;
   alergii: string;
   greutate: number;
@@ -128,8 +129,8 @@ export interface Alarms {
 
 export interface Istoric_Alarme {
   id_alerta_automata: number;
-  data_alerta_automata: Date;
-  data_rezolvare_alerta: Date | null;
+  data_alerta_automata: string;
+  data_rezolvare_alerta: string | null;
   CNP_pacient: string;
   umiditate: number | null;
   temperatura: number | null;
